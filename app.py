@@ -7,13 +7,13 @@ app = Flask(__name__)
 app.secret_key = "testing"
 
 # #connect to your Mongo DB database
-def MongoDB():
-    client = MongoClient("mongodb+srv://edwin:coolcomp123@ed0.f1hpi.mongodb.net/?retryWrites=true&w=majority")
+def cloudMongoDB():
+    client = MongoClient("mongodb+srv://edwin:<>@ed0.f1hpi.mongodb.net/?retryWrites=true&w=majority")
     db = client.get_database('sample_mflix')
     records = db.register
     return records
     
-#records = MongoDB()
+records = cloudMongoDB()
 
 
 ##Connect with Docker Image###
@@ -34,7 +34,7 @@ def dockerMongoDB():
     })
     return records
 
-records = dockerMongoDB()
+#records = dockerMongoDB()
 
 
 @app.route("/startup")
@@ -65,7 +65,10 @@ def showrecord(name):
     record = records.find_one({'name': name})
     return render_template('record.html', record = record)
     
-
+@app.route("/showallrecords")
+def showallrecords():
+    record = records.find({})
+    return render_template('record.html', record = record)
 
 #assign URLs to have a particular route 
 @app.route("/", methods=['post', 'get'])

@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: flask-app-v1   #pod name/deployment name
+  labels:
+    app: flask-app     #KV pairs
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: flask-pods # tells the Deployment which Pods it manages (must match pod template labels).
+  template:
+    metadata:
+      labels:
+        app: flask-pods #labels applied to the Pods created by the Deployment.
+    spec:
+      containers:
+      - name: flask-container #name of the container inside the Pod (must be unique per pod, but doesn’t need to match labels).
+        image: edwin0docker/mongo-flask:latest
+        ports:
+        - containerPort: 5000
